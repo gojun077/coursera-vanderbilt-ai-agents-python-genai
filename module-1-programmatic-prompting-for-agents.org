@@ -1,9 +1,9 @@
 #+TITLE: Module 1 - Programmatic Prompting for Agents
-#+SUBTITLE: 
+#+SUBTITLE: hands-on exercise using litellm to prompt OpenAI models
 #+AUTHOR: Peter Jun Koh
 #+EMAIL: gopeterjun@naver.com
-#+DESCRIPTION: coursework notes and code
-#+KEYWORDS: gen AI, LLM, claude code, prompting, markdown
+#+DESCRIPTION: litellm hands-on
+#+KEYWORDS: gen AI, LLM, litellm, prompting for agents, python
 #+LANGUAGE: en
 
 * Summary

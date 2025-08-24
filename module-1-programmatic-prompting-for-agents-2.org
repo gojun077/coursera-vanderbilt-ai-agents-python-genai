@@ -1,0 +1,184 @@
+#+TITLE: Module 1 - Programmatic Prompting for Agents 2
+#+SUBTITLE: hands-on exercise using litellm
+#+AUTHOR: Peter Jun Koh
+#+EMAIL: gopeterjun@naver.com
+#+DESCRIPTION: edit prompt so that model only outputs Base64 encoded text
+#+KEYWORDS: gen AI, LLM, litellm, prompting for agents, python
+#+LANGUAGE: en
+
+* Summary
+
+- Created on: [2025-08-24 Sun]
+- Last Updated: [2025-08-24 Sun 23:58]
+
+Let's review and extend the solution from the previous exercise.
+
+
+* Topics
+
+** Line by line explanation of python script
+
+#+begin_src python
+  from gpg_authinfo import get_api_key
+  from litellm import completion
+  from typing import List, Dict
+  import os
+
+
+  def generate_response(messages: List[Dict]) -> str:
+      """Call LLM to get response"""
+      response = completion(
+          model="openai/gpt-4o",
+          messages=messages,
+          max_tokens=1024
+      )
+      return response.choices[0].message.content
+
+  def main():
+      openai_api_key = get_api_key('openai')
+      if openai_api_key:
+          os.environ['OPENAI_API_KEY'] = openai_api_key
+      messages = [
+          {"role": "system",
+           "content": "You are an expert software engineer that prefers functional programming."},
+          {"role": "user",
+           "content": "Write a function to swap the keys and values in a dictionary."}
+      ]
+      response = generate_response(messages)
+      print(response)
+
+  if __name__ == '__main__':
+      main()
+#+end_src
+
+Let’s break down the key components:
+
+1. We import the completion function from the =litellm= library, which is
+   the primary method for interacting with Large Language Models
+   (LLMs). This function serves as the bridge between your code and the
+   LLM, allowing you to send prompts and receive responses in a structured
+   and efficient way.
+   - /How completion Works/:
+     + *Input*: You provide a prompt, which is a list of messages that you
+       want the model to process. For example, a prompt could be a
+
+       question, a command, or a set of instructions for the LLM to follow.
+     + *Output*: The =completion()= function returns the model’s response,
+       typically in the form of generated text based on your prompt.
+
+2. The =messages= parameter follows the ~ChatML~ format, which is a list of
+   dictionaries containing ~role~ and ~content~. The ~role~ attribute
+   indicates who is “speaking” in the conversation. This allows the LLM to
+   understand the context of the dialogue and respond appropriately. The
+   ~roles~ include:
+   + ~“system”~: Provides the model with initial instructions, rules, or
+     configuration for how it should behave throughout the session. This
+     message is not part of the “conversation” but sets the ground rules or
+     context (e.g., /“You will respond in JSON.”/).
+
+   + ~"user"~: Represents input from the user. This is where you provide
+     your prompts, questions, or instructions.
+
+   + ~“assistant”~: Represents responses from the AI model. You can include
+     this role to provide context for a conversation that has already
+     started or to guide the model by showing sample responses. These
+     messages are interpreted as what the “model” said in the past.
+
+3. We specify the model using the provider/model format (e.g.,
+   ~“openai/gpt-4o”~)
+
+4 .The =response= contains the generated text in
+=choices[0].message.content=. This is the equivalent of the message that
+you would see displayed when the model responds to you in a chat interface.
+
+  - *Note*: =choices[0].message.content= does not exist for =streaming=
+    responses
+
+** Quick Exercise: Response in Base64
+
+As a practice exercise, try creating a prompt that only provides the
+response as a Base64 encoded string and refuses to answer in natural
+language. Can you get your LLM to only respond in Base64?
+
+#+begin_src python
+  from gpg_authinfo import get_api_key
+  from litellm import completion
+  from typing import Dict, List, Union
+  import base64
+  import binascii
+  import os
+
+
+  def generate_response_b64(messages: List[Dict]) -> bytes:
+      """Call LLM to get response in base64 (bytes)"""
+      response = completion(
+          model="openai/gpt-4o",
+          messages=messages,
+          max_tokens=1024
+      )
+      return response.choices[0].message.content
+
+  def decode_b64(data: Union[str, bytes]) -> str:
+      """
+      Safely decodes a Base64 string or bytes object to UTF-8 plaintext.
+
+      >>> decode_b64("UHl0aG9uIGlzIGF3ZXNvbWUh")
+      'Python is awesome!'
+
+      >>> decode_b64(b"SGVsbG8sIFdvcmxkIQ==")
+      'Hello, World!'
+
+      >>> decode_b64("UHl0aG9uIGl#IGF3ZXNvbWUh")
+      'Error decoding Base64: Incorrect padding'
+      """
+      try:
+          # Decode the Base64 data into bytes, then decode the bytes into a
+          # UTF-8 string
+          return base64.b64decode(data).decode('utf-8')
+      except (binascii.Error, UnicodeDecodeError) as e:
+          # Handle incorrect padding, invalid characters, or non-UTF8 results
+          return f"Error decoding Base64: {e}"
+
+  def main():
+      openai_api_key = get_api_key('openai')
+      if openai_api_key:
+          os.environ['OPENAI_API_KEY'] = openai_api_key
+      messages = [
+          {"role": "system",
+           "content": "You are an expert programming oracle that prefers functional programming and can only respond in Base64-encoded text."},
+          {"role": "user",
+           "content": "Write a function to swap the keys and values in a dictionary."}
+      ]
+      response = generate_response_b64(messages)
+      print(f"Base64 text: {response}")
+      print(f"UTF8 text: {decode_b64(response)}")
+
+  if __name__ == '__main__':
+      main()
+#+end_src
+
+** Sample output from Quick Exercise
+
+#+begin_src python
+  Base64 text: RnVuY3Rpb25hbCBwcm9ncmFtbWluZyBwYXJhZGlnbSBjYW4gYmUgdXNlZCB0byBpbXBsZW1lbnQgdGhpcyB0YXNrLiBIZXJlIGlzIGEgZnVuY3Rpb24gdGhhdCBzd2FwcyBrZXlzIGFuZCB2YWx1ZXMgaW4gYSBkaWN0aW9uYXJ5OiAKCmBgcHlsCmltcG9ydCBpdGVydG9vbHMgYXMgaXQKZnJvbSBmdW5jdG9vbHMgaW1wb3J0IHJlZHVjZQpkZWYgc3dhcF9kaWN0KGRpY3QpOgogICAgcmV0dXJuIHJlZHVjZShsYW1iZGEgdHY6IGtldiBmb3Iga2V5LCB0diBpbiBkaWN0Lm1vZ2tldigpKQpgYG==
+  UTF8 text: 'Functional programming paradigm can be used to implement this
+  task. Here is a function that swaps keys and values in a dictionary:
+  \n\n```python\nimport itertools as it\nfrom functools import reduce\ndef
+  swap_dict(dict):\n return reduce(lambda tv: kev for key, tv in
+  dict.mogkev())\n``'
+#+end_src
+
+*Note*: I inserted add'l linebreaks to the text above to aid readability.
+
+Here is a code snippet for better legibility:
+
+#+begin_src python
+  import itertools as it
+  from functools import reduce
+  def swap_dict(dict):
+      return reduce(lambda tv: kev for key, tv in dict.mogkev())
+#+end_src
+
+I think =dict.mogkev()= is a hallucination as there is no attribute or
+object with this name. Perhaps the prompt to output text encoded as Base64
+threw ~gpt-4o~ off?
