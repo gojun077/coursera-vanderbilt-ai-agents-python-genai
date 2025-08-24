@@ -1,0 +1,73 @@
+#+TITLE: AI Agents & Agentic AI w/ Python & Generative AI
+#+SUBTITLE: Coursera/Vanderbilt Univ online course
+#+AUTHOR: Peter Jun Koh
+#+EMAIL: gopeterjun@naver.com
+#+DESCRIPTION: coursework, notes and code
+#+KEYWORDS: gen AI, LLM, agentic loop, tool call
+#+LANGUAGE: en
+
+* Summary
+
+- Created on: [2025-08-24 Sun]
+- Last Updated: [2025-08-24 Sun 14:16]
+
+This repo contains my coursework, notes, and code from the Vanderbilt
+University course offered through Coursera, [[https://www.coursera.org/learn/ai-agents-python/home/welcome][AI Agents & Agentic AI with
+Python & Generative AI]], and taught by Prof. Jules White. The first
+iteration of the course was released in Summer 2025.
+
+*Syllabus*
+
+- Module 1: Agentic AI Concepts
+  + Introduction
+  + Flipped Interaction Pattern
+  + The Agent Loop
+  + Programmatic Prompting for Agents
+  + Programmatic Prompting for Agents II
+  + Programmatic Prompting for Agents III
+  + Try Out the Customer Service Agent
+  + Giving Agents Memory
+  + Practicing Programmatic Prompting for Agents
+  + Adding Structure to AI Agent Outputs
+  + Building Your First Agent
+  + AI Agent / Environment Interface
+  + AI Agent Feedback and Memory
+  + *Graded Assignment*: Understanding Feedback & Memory
+- Module 2: AI Agents, Actions, Tools, and Language
+  + /GAIL/ - Goals, Actions, Information, Language
+  + Giving Agents Tools
+  + Tool Descriptions and Naming
+  + Tool Results and Agent Feedback
+  + Agent Tools in Python
+  + Try Out an Agent that Calls Python Functions
+  + Using Function Calling Capabilities with LLM's
+  + Try Out LLM Function Calling
+  + An Agent Loop with Function Calling
+  + Try Out an Agent Loop with Function Calling
+  + Exercise: Extend the Function Calling Agent
+  + Agent Tool Design Best Practices
+  + *Graded Assignment*: Understanding the AI Agent Loop
+- Module 3: /GAME/ - A Conceptual Framework for AI Agents
+  + Goals, Actions, Memory, Environment
+  + Overview of the /GAME/ Framework
+  + Designing AI Agents with /GAME/
+  + Simulating Agents in ChatGPT
+  + Simulating /GAME/ Agents in ChatGPT
+  + Simulating /GAME/ Agents in Conversation
+  + Modular AI Agent Design
+  + Agent Loop Customization
+  + Implementing /GAME/ in Code
+  + Try Out the Agent Framework
+  + How Your Agent Communicates with the LLM: The Agent Language
+  + Putting It All Together: Document Your Code with a README Agent
+- Module 4: Agent Tool Management
+  + Keeping Agent Tools Up-to-Date with Python Decorators
+  + Tool Organization for Agents
+  + Refactoring our README Agent
+  + Try out the README Agent with the Decorator
+- Module 5: Rethinking How Software is Built in the Age of AI Agents
+  + Build the Impossible with AI Agents
+  + Rethinking How We Teach Innovation
+  + The Inventory Management Agent
+  + Hallucination is a New Form of Computing
+  + New Ways to Access & Extract Information
