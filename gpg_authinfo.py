@@ -56,14 +56,14 @@ def get_creds_authinfo(filename: str) -> list[list[str]]:
 
 def get_api_key(provider: str) -> str:
     """
-    Given str 'provider' ('anthropic', 'openai', 'deepseek', 'alibaba',
-    'google', 'xai', etc), open a netrc-formatted gpg-encrypted credential
-    file and search for the model provider and return the API secret key
-    for the requested provider.
+    Given str 'provider' ('dashscope', anthropic', 'openai', 'deepseek',
+    'alibaba', 'google', 'xai', etc), open a netrc-formatted gpg-encrypted
+    credential file and search for the model provider and return the API
+    secret key for the requested provider.
     """
     try:
-        providersL = ['anthropic', 'openai', 'deepseek', 'alibaba',
-                      'google', 'x.ai']
+        providersL = ['dashscope', 'anthropic', 'openai', 'deepseek',
+                      'alibaba', 'google', 'x.ai']
         if provider not in providersL:
             print(f"Unknown model provider! Please try one of {providersL}")
             return None
