@@ -63,7 +63,7 @@ def get_api_key(provider: str) -> str:
     """
     try:
         providersL = ['anthropic', 'openai', 'deepseek', 'alibaba',
-                      'google', 'xai']
+                      'google', 'x.ai']
         if provider not in providersL:
             print(f"Unknown model provider! Please try one of {providersL}")
             return None
