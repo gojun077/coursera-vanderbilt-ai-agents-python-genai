@@ -1,0 +1,115 @@
+#+TITLE: Module 1 - Programmatic Prompting for Agents
+#+SUBTITLE: 
+#+AUTHOR: Peter Jun Koh
+#+EMAIL: gopeterjun@naver.com
+#+DESCRIPTION: coursework notes and code
+#+KEYWORDS: gen AI, LLM, claude code, prompting, markdown
+#+LANGUAGE: en
+
+* Summary
+
+- Created on: [2025-08-24 Sun]
+- Last Updated: [2025-08-24 Sun 22:53]
+
+In this exercise, we will set a system prompt and then ask the LLM to
+generate some code.
+
+To get started building agents, we need to understand how to send prompts
+to LLMs. Agents require two key capabilities:
+
+- *Programmatic prompting* - Automating the prompt-response cycle that
+  humans do manually in a conversation. This forms the foundation of the
+  Agent Loop we’ll explore.
+- *Memory management* - Controlling what information persists between
+  iterations, like API calls and their results, to maintain context through
+  the agent’s decision-making process.
+
+Programmatically sending prompts is how we move from having a human type in
+prompts and then take action based on the LLM’s response to having an agent
+that can do this automatically. The Agent Loop that we will begin building
+over the next several readings will be programmatically sending prompts to
+the LLM and then taking action based on the LLM’s response.
+
+We will also need to understand how to manage what the LLM knows or
+remembers. This is important because we want to be able to control what
+information the LLM has in each iteration of the loop. For example, if it
+just called an API, we want it to remember what API it asked to be invoked
+and what the result of that action was.
+
+
+* Topics
+
+** Google Colab Code Snippet using =litellm=
+
+*Note*: I edited the below snippet to read my API credentials from an
+encrypted ~.authinfo.gpg~ file instead of using Google Colab iPython
+Notebook secret management.
+
+#+begin_src python
+  from gpg_authinfo import get_api_key
+  from litellm import completion
+  from typing import List, Dict
+  import os
+
+
+  def generate_response(messages: List[Dict]) -> str:
+      """Call LLM to get response"""
+      response = completion(
+          model="openai/gpt-4o",
+          messages=messages,
+          max_tokens=1024
+      )
+      return response.choices[0].message.content
+
+  def main():
+      openai_api_key = get_api_key('openai')
+      if openai_api_key:
+          os.environ['OPENAI_API_KEY'] = openai_api_key
+      messages = [
+          {"role": "system",
+           "content": "You are an expert software engineer that prefers functional programming."},
+          {"role": "user",
+           "content": "Write a function to swap the keys and values in a dictionary."}
+      ]
+      response = generate_response(messages)
+      print(response)
+
+  if __name__ == '__main__':
+      main()
+#+end_src
+
+If you execute the above program you should see output similar to those in
+the next section, although your results will be different due to the
+non-determinism of LLM's.
+
+** Prompt Results
+
+*OpenAI gpt-4o response*
+
+To swap the keys and values in a dictionary, you can create a new
+dictionary where each key-value pair from the original dictionary is
+inverted in the new one. Here's a functional approach in Python using
+dictionary comprehension:
+
+#+begin_src python
+  def swap_keys_values(d):
+      # Ensure that the values are unique, as they will become keys
+      if len(d) != len(set(d.values())):
+          raise ValueError("The original dictionary must have unique values to swap keys and values.")
+
+      # Swap keys and values using dictionary comprehension
+      return {v: k for k, v in d.items()}
+
+  # Example usage
+  original_dict = {'a': 1, 'b': 2, 'c': 3}
+  swapped_dict = swap_keys_values(original_dict)
+  print(swapped_dict)  # Output: {1: 'a', 2: 'b', 3: 'c'}
+#+end_src
+
+This function first checks that all values in the original dictionary are
+unique, ensuring that when they become keys in the new dictionary, there
+will be no conflicts. The swap is done using a dictionary comprehension
+that iterates over the items of the original dictionary, =d.items()=, and
+constructs a new dictionary with the keys and values swapped. This approach
+maintains /immutability/ and the /declarative/ nature favored in functional
+programming.
