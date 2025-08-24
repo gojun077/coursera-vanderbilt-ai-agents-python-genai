@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# litllm_test.py
+# litellm_test.py
 #
 # Created on: Sun 24 Aug 2025
 # Created by: gopeterjun@naver.com
