@@ -9,7 +9,7 @@
 * Summary
 
 - Created on: [2025-08-24 Sun]
-- Last Updated: [2025-08-24 Sun 23:58]
+- Last Updated: [2025-08-31 Sun 14:33]
 
 Let's review and extend the solution from the previous exercise.
 
@@ -61,7 +61,6 @@ Let’s break down the key components:
    - /How completion Works/:
      + *Input*: You provide a prompt, which is a list of messages that you
        want the model to process. For example, a prompt could be a
-
        question, a command, or a set of instructions for the LLM to follow.
      + *Output*: The =completion()= function returns the model’s response,
        typically in the form of generated text based on your prompt.
@@ -71,15 +70,15 @@ Let’s break down the key components:
    indicates who is “speaking” in the conversation. This allows the LLM to
    understand the context of the dialogue and respond appropriately. The
    ~roles~ include:
-   + ~“system”~: Provides the model with initial instructions, rules, or
+   - ~“system”~: Provides the model with initial instructions, rules, or
      configuration for how it should behave throughout the session. This
      message is not part of the “conversation” but sets the ground rules or
      context (e.g., /“You will respond in JSON.”/).
 
-   + ~"user"~: Represents input from the user. This is where you provide
+   - ~"user"~: Represents input from the user. This is where you provide
      your prompts, questions, or instructions.
 
-   + ~“assistant”~: Represents responses from the AI model. You can include
+   - ~“assistant”~: Represents responses from the AI model. You can include
      this role to provide context for a conversation that has already
      started or to guide the model by showing sample responses. These
      messages are interpreted as what the “model” said in the past.
