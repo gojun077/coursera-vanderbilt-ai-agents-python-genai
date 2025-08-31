@@ -1,0 +1,25 @@
+#+TITLE: Module 1.4 - LLM's do not have memory
+#+SUBTITLE: models do not inherently remember previous responses
+#+AUTHOR: Peter Jun Koh
+#+EMAIL: gopeterjun@naver.com
+#+DESCRIPTION: 
+#+KEYWORDS: gen AI, LLM, litellm, memory
+#+LANGUAGE: en
+
+* Summary
+
+- Created on: [2025-08-31 Sun]
+- Last Updated: [2025-08-31 Sun 16:45]
+
+* Topics
+
+When we are building an Agent, we need it to remember its actions and the
+result of those actions. For example, if it tries to create a calendar
+event for a meeting and the API call fails due to an incorrect parameter
+value that it provided, we want it to remember that the API call failed and
+why. This way, it can correct the mistake and try again. If we have a
+complex task that we break down into multiple steps, we need the Agent to
+remember the results of each step to ensure that it can continue the task
+from where it left off. Memory is crucial for Agents.
+
+** 

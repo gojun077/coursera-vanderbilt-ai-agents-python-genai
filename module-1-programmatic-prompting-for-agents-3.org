@@ -2,7 +2,7 @@
 #+SUBTITLE: Sending Prompts Programmatically & Managing Memory 3
 #+AUTHOR: Peter Jun Koh
 #+EMAIL: gopeterjun@naver.com
-#+DESCRIPTION: 
+#+DESCRIPTION: 'system' and 'user' messages parameters
 #+KEYWORDS: gen AI, LLM, litellm, prompting for agents, python
 #+LANGUAGE: en
 
