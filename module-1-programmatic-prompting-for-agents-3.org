@@ -56,6 +56,11 @@ system messages:
   print(response)
 #+end_src
 
+The =system= message is *the most important part of this prompt*. It tells
+the model how to behave. The =user= message is the question that we want
+the model to answer. The system instructions lay the ground rules for the
+interaction.
+
 Sample output:
 
 *** DeepSeek Chat response to above prompt
@@ -65,3 +70,76 @@ Sample output:
   then turning them back on. This should help restore your Internet
   connection.
 #+end_src
+
+** User message
+
+The messages can incorporate arbitrary information as long as it is in text
+form. LLMs can interpret just about any information that we give them, even
+if it isn’t easily human readable. Let’s generate an implementation of a
+function based on some information in a dictionary:
+
+#+begin_src python
+  import json
+
+  code_spec = {
+      'name': 'swap_keys_values',
+      'description': 'Swaps the keys and values in a given dictionary.',
+      'params': {
+          'd': 'A dictionary with unique values.'
+      },
+  }
+
+  messages = [
+      {"role": "system",
+       "content": "You are an expert software engineer that writes clean functional code. You always document your functions."},
+      {"role": "user", "content": f"Please implement: {json.dumps(code_spec)}"}
+  ]
+
+  response = generate_response(messages)
+  print(response)
+#+end_src
+
+*** Output of prompt using =code_spec=
+
+#+begin_src markdown
+  I'll implement a function that swaps keys and values in a dictionary. This
+  assumes the values are unique as specified.
+
+  ```python
+  def swap_keys_values(d):
+      """
+      Swap keys and values in a dictionary.
+
+      This function creates a new dictionary where the original values become keys
+      and the original keys become values. This operation requires that all values
+      in the input dictionary are unique.
+
+      Args:
+          d (dict): A dictionary with unique values to be swapped
+
+      Returns:
+          dict: A new dictionary with keys and values swapped
+
+      Example:
+          >>> swap_keys_values({'a': 1, 'b': 2, 'c': 3})
+          {1: 'a', 2: 'b', 3: 'c'}
+      """
+      return {value: key for key, value in d.items()}
+  ```
+
+  The function uses a dictionary comprehension to efficiently create a new
+  dictionary where each key-value pair is swapped. The time complexity is
+  `O(n)` where `n` is the number of items in the dictionary, and the space
+  complexity is also `O(n)` for the new dictionary.
+
+  ,**Note**: This implementation assumes the input dictionary has unique
+  values as specified in the requirements. If the input contains duplicate
+  values, the function will preserve only the last key-value mapping for each
+  duplicate value.
+#+end_src
+
+We will rely heavily on the ability to send the LLM just about any type of
+information, particularly JSON, when we start building agents. This is a
+simple example of how we can use JSON to send information to the LLM, but
+you can see how we could provide it JSON with information about the result
+of an API call, for example.
