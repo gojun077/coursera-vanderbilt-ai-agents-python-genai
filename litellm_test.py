@@ -145,6 +145,9 @@ def test_xai() -> int:
                 user="user-debug-run")
             print(response)
             return 0
+        else:
+            print("xAI API key not found!", file=sys.stderr)
+            return 1
     except Exception as e:
         print(f"An exception occurred during the xAI test: {e}",
               file=sys.stderr)
@@ -201,53 +204,26 @@ def main() -> int:
         return 1
 
     exit_code = 0
-    if args.aliyun or args.all:
-        print("\n--- Running Aliyun Test ---")
-        if test_aliyun() != 0:
-            exit_code = 1 # Mark failure if any test fails
-            print("--- Aliyun Test FAILED ---\n")
-        else:
-            print("--- Aliyun Test PASSED ---\n")
-
-    if args.anthropic or args.all:
-        print("\n--- Running Anthropic Test ---")
-        if test_anthropic() != 0:
-            exit_code = 1 # Mark failure if any test fails
-            print("--- Anthropic Test FAILED ---\n")
-        else:
-            print("--- Anthropic Test PASSED ---\n")
-
-    if args.deepseek or args.all:
-        print("\n--- Running Deepseek Test ---")
-        if test_deepseek() != 0:
-            exit_code = 1
-            print("--- Deepseek Test FAILED ---\n")
-        else:
-            print("--- Deepseek Test PASSED ---\n")
-
-    if args.gemini or args.all:
-        print("\n--- Running Gemini Test ---")
-        if test_gemini() != 0:
-            exit_code = 1
-            print("--- Gemini Test FAILED ---\n")
-        else:
-            print("--- Gemini Test PASSED ---\n")
-
-    if args.openai or args.all:
-        print("\n--- Running OpenAI Test ---")
-        if test_openai() != 0:
-            exit_code = 1
-            print("--- OpenAI Test FAILED ---\n")
-        else:
-            print("--- OpenAI Test PASSED ---\n")
-
-    if args.xai or args.all:
-        print("\n--- Running xAI Test ---")
-        if test_xai() != 0:
-            exit_code = 1
-            print("--- xAI Test FAILED ---\n")
-        else:
-            print("--- xAI Test PASSED ---\n")
+    
+    # Define test configurations
+    test_configs = {
+        'aliyun': (test_aliyun, 'Aliyun'),
+        'anthropic': (test_anthropic, 'Anthropic'),
+        'deepseek': (test_deepseek, 'Deepseek'),
+        'gemini': (test_gemini, 'Gemini'),
+        'openai': (test_openai, 'OpenAI'),
+        'xai': (test_xai, 'xAI')
+    }
+    
+    # Run selected tests
+    for provider, (test_func, display_name) in test_configs.items():
+        if getattr(args, provider) or args.all:
+            print(f"\n--- Running {display_name} Test ---")
+            if test_func() != 0:
+                exit_code = 1
+                print(f"--- {display_name} Test FAILED ---\n")
+            else:
+                print(f"--- {display_name} Test PASSED ---\n")
 
     if exit_code == 0:
         print("✅ All selected tests completed successfully!")
